@@ -3,6 +3,7 @@
     "version": "0.1",
     "manifest_version": 3,
     "description": "自动查出班级所有学生的成绩，然后统计出某人的班级名次。用户必须提供班级所有学生的姓名。",
+    "default_locale": "zh_CN",
     "icons": {
         "128": "icon128.png"
     },
