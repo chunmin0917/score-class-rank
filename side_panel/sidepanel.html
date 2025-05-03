@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <title>班级名次抓取</title>
+        <meta charset="utf-8" />
+        <style>
+            .highlightred {
+                color: red;
+                font-weight: bold;
+            }
+            .highlightblue {
+                color: blue;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <h1> 请输入班级所有学生的姓名：</h1>
+        <p>1.每行一个姓名</p>
+        <p>2.请将你家小孩的姓名放在<b>第一行</b></p>
+        <textarea id="classNames" rows="8" cols="10" placeholder="陈多多&#10;路人1&#10;路人2&#10;"></textarea><br />
+        <button id="doScratch" type="button">开始抓取</button>
+        <div id="progress"></div>
+        <br>
+        <div id="allResult" style="display: none;">
+            <span class="highlightblue">抓取结果：</span><br>
+            <div id="resultSummary"></div>
+            <br>
+            <span class="highlightblue">名次结果：</span><button id="copyResult" type="button">复制</button><br>
+            <div id="personalScore"></div>
+            <br>
+        </div>
+        <div id="inputNameAgain" style="display: none;">
+            <p><b>如果第一行不是你家小孩，请再次输入你家小孩的姓名，多个姓名用“空格”分隔</b></p>
+            <input id="inputNameAgainInput" type="text" placeholder="陈多多 陈欢欢 陈豆豆" />
+            <button id="inputNameAgainBtn" type="button">查询</button>
+        </div>
+        <br>
+        <a href="../help/help.html" target="_blank" style="font-size: 14px; text-decoration: none;">帮助</a>
+        <script src="sidepanel.js"></script>
+    </body>
+</html>
