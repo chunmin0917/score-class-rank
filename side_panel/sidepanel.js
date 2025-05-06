@@ -24,8 +24,9 @@ copyResulButton.onclick = copyResultToClipboard;
 
 doScratchButton.onclick = function () {
     if (!classNamesTAValueIsChanged) {
-        alert("输入的姓名没有改变，请修改后再开始抓取！");
-        return;
+        if(!confirm(`输入的姓名没有改变，是否继续？`)) {
+            return;
+        }
     }
     index = 0;
     scoreResult = [];
@@ -145,6 +146,10 @@ function goBackToMainPage() {
         parseRankResult();
         displayRankResult();
         copyResultToClipboard() ;
+        if (typeof saveClassName === "function") {
+            // 函数存在，可以安全调用
+            saveClassName();
+        } 
         return;
     }
     setTimeout(() => {
