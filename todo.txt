@@ -1,2 +1,3 @@
-1.save classnames in edge 
+1.after input class name, let content.js send score to side_panel.js actively, so that we can reduce 4 seconds per name to about 1 second per name. need more test case. too complicated to implement it.
 2.save result in background node.js express and redis
+3.不使用scores.sort((a, b) => b.score - a.score); 在调用displayPersonalScore生成rank，科目名称、最高分、最低分、平均分，提高性能

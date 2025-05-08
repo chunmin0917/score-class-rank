@@ -23,7 +23,7 @@ for /f "tokens=2 delims==." %%a in ('"wmic os get localdatetime /value"') do set
 set timestamp=%datetime:~0,8%_%datetime:~8,6%
 if exist "%OUTPUT%" (
     :: 重命名旧文件
-    ren "%OUTPUT%" "%OUTPUT%_%timestamp%"
+    ren "%OUTPUT%" "%OUTPUT%_%timestamp%.zip"
 )
 
 :: 打包文件

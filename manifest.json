@@ -1,6 +1,6 @@
 {
     "name": "抓取某人成绩的班级名次",
-    "version": "0.1",
+    "version": "0.2",
     "manifest_version": 3,
     "description": "自动查出班级所有学生的成绩，然后统计出某人的班级名次。用户必须提供班级所有学生的姓名。",
     "default_locale": "zh_CN",
