@@ -4,5 +4,13 @@
 
 目前状态：
 
-![图片](https://github.com/user-attachments/assets/ebcb422f-be6d-4a0f-9df6-4e2d438039f4)
+第一次发布失败。原因如下：
+![图片](https://github.com/user-attachments/assets/0c3f34e4-ede6-4ee5-be27-e5ae15c03244)
+
+
+修改后继续到0.2版本：
+
+![图片](https://github.com/user-attachments/assets/a4190a28-1049-4b06-9d2a-5d230003f83a)
+
+
 
