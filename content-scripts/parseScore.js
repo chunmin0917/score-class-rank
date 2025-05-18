@@ -1,3 +1,6 @@
+console.log("parseScore.js is loaded!");
+
+// 修改keywordsforsubject时，同时更新keywordsforsubject.json文件
 const keywordsforsubject = [
     '语文', '数学', '英语', '物理', '化学', '道法','历史','生物', '政治', '地理', 
     '道德与法治', '外语',

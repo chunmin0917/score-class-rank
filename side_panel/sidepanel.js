@@ -48,6 +48,10 @@ doScratchButton.onclick = function () {
         console.log("currentTabID is ", currentTabID);
         searchPageURL = tabs[0].url;
         console.log("searchPageURL is ", searchPageURL);
+        if (isInternalPage(searchPageURL)) {
+            alert("当前页面不是成绩查询页面！");
+            return;
+        } 
         setButtonAndInputNameAgainDivStatus();
         if (classNames.length === 2 && classNames[0] === "DEBUG") {
             doDebugMode();
@@ -57,6 +61,14 @@ doScratchButton.onclick = function () {
     });
     classNamesTAValueIsChanged = false;
 };
+
+function isInternalPage(url) {
+    return url.startsWith('chrome://') ||
+           url.startsWith('chrome-extension://') ||
+           url.startsWith('edge://') ||
+           url.startsWith('about:') ||
+           url.startsWith('moz-extension://');
+}
 
 function checkClassNames() {
     classNamesTAValueIsChanged = true;
@@ -101,7 +113,7 @@ function sendInputAndSearchMessage() {
             console.log("Received the response message by InputAndSearch type: ", response);
             if (response.status === "ERROR") {
                 alert(response.detailMessage);
-                setButtonAndInputNameAgainDivStatus();
+                setButtonAndInputNameAgainDivStatus(true);
                 return;
             }
             setTimeout(() => {
@@ -172,11 +184,13 @@ function copyResultToClipboard() {
     });
 }
 
-function setButtonAndInputNameAgainDivStatus() {
+function setButtonAndInputNameAgainDivStatus(failFlag) {
     if (doScratchButton.disabled) {
         doScratchButton.disabled = false;
         doScratchButton.innerText = "开始抓取";
-        inputNameAgainDiv.style.display = "block";
+        if (!failFlag) {
+            inputNameAgainDiv.style.display = "block";
+        }
     } else {
         doScratchButton.disabled = true;
         doScratchButton.innerText = "正在抓取...";

@@ -1,6 +1,8 @@
 let inputElement;
 let searchButton;
 
+console.log("content.js is loaded!");
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   //https://x4snq96d.yichafen.com/qz/150UHofcut
   console.log("content.js received message name:", request.name);
