@@ -132,6 +132,7 @@ function sendParseScoreMessage() {
         {
             messageType: "ParseScore",
             name: classNames[index],
+            subjects: keywordsforsubjectArray,
         },
         function (response) {
             console.log("Received the response message by ParseScore type: ", response);

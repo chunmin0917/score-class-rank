@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 
   if(request.messageType === "ParseScore") {
-    doParseScore (request.name, sendResponse);
+    doParseScore (request.name,request.subjects, sendResponse);
   }
   
 });

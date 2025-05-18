@@ -6,6 +6,7 @@ const KEYWORDS_FOR_SUBJECT_URL = "https://github.com/chunmin0917/score-class-ran
 const KEYWORDS_FOR_SUBJECT = "keywordsforsubject";
 
 loadAllConfig();
+
 function loadAllConfig(){
     loadClassNames();
     loadSubjectFromLocal();
@@ -15,11 +16,12 @@ function loadAllConfig(){
 function loadSubjectFromUrlandSave() {
     // Load keywords for subject from URL and save to local storage
     console.log("loadSubjectFromUrlandSave()");
-    fetch(chrome.runtime.getURL(KEYWORDS_FOR_SUBJECT_URL))
+    fetch(KEYWORDS_FOR_SUBJECT_URL)
         .then(response => response.json())
         .then(data => {
             keywordsforsubjectArray = data;
-            localStorage.setItem(KEYWORDS_FOR_SUBJECT, data);
+            localStorage.setItem(KEYWORDS_FOR_SUBJECT, JSON.stringify(data));
+            console.log("keywordsforsubjectArray from URL:", keywordsforsubjectArray);
         })
         .catch(error => {
             console.error("Error loading keywords for subject:", error);
@@ -30,7 +32,8 @@ function loadSubjectFromLocal() {
     console.log("loadSubjectFromLocal()");
     const subjects = localStorage.getItem(KEYWORDS_FOR_SUBJECT);
     if (subjects) {
-        keywordsforsubjectArray =subjects;
+        keywordsforsubjectArray =JSON.parse(subjects);
+        console.log("keywordsforsubjectArray from local:", keywordsforsubjectArray);
     }      
 }
 

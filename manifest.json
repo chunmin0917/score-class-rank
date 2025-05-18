@@ -21,5 +21,8 @@
     "background": {
         "service_worker": "service-worker.js"
     },
+    "host_permissions": [
+        "https://github.com/*"
+    ],
     "permissions": ["sidePanel","tabs", "scripting", "clipboardWrite"]
 }
