@@ -18,6 +18,7 @@ let index=0;
 const delay =2000;//在发出消息后，等待2秒消息完成，然后执行后续的操作
 let searchPageURL;
 let classNamesTAValueIsChanged = false;
+let keywordsforsubjectArray = [];//科目关键词数组
 
 classNamesTA.onchange = checkClassNames;
 copyResulButton.onclick = copyResultToClipboard;

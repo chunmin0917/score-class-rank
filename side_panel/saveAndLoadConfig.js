@@ -2,13 +2,36 @@
  * depends on: sidePanel.js
  */
 const CLASSNAMES = "classNames";
-const keywordsforsubject_URL = "keywordsforsubject";
-const keywordsforsubject = "keywordsforsubject";
+const KEYWORDS_FOR_SUBJECT_URL = "https://github.com/chunmin0917/score-class-rank/raw/refs/heads/main/content-scripts/keywordsforsubject.json";
+const KEYWORDS_FOR_SUBJECT = "keywordsforsubject";
 
 loadAllConfig();
-
 function loadAllConfig(){
     loadClassNames();
+    loadSubjectFromLocal();
+    loadSubjectFromUrlandSave();
+}
+
+function loadSubjectFromUrlandSave() {
+    // Load keywords for subject from URL and save to local storage
+    console.log("loadSubjectFromUrlandSave()");
+    fetch(chrome.runtime.getURL(KEYWORDS_FOR_SUBJECT_URL))
+        .then(response => response.json())
+        .then(data => {
+            keywordsforsubjectArray = data;
+            localStorage.setItem(KEYWORDS_FOR_SUBJECT, data);
+        })
+        .catch(error => {
+            console.error("Error loading keywords for subject:", error);
+        });
+}
+
+function loadSubjectFromLocal() {
+    console.log("loadSubjectFromLocal()");
+    const subjects = localStorage.getItem(KEYWORDS_FOR_SUBJECT);
+    if (subjects) {
+        keywordsforsubjectArray =subjects;
+    }      
 }
 
 function loadClassNames() {
