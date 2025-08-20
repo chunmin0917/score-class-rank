@@ -31,4 +31,4 @@ powershell -Command "Compress-Archive -Path %PATHS% -DestinationPath '%OUTPUT%'"
 
 :: 输出完成信息
 echo finish %OUTPUT%
-pause
+:: pause
