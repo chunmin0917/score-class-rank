@@ -1,0 +1,29 @@
+name: Package and Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-and-upload:
+    runs-on: windows-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 获取当前 Release 版本号
+        id: vars
+        run: echo "RELEASE_VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: 运行 package.bat 并重命名 zip
+        run: |
+          .\package.bat
+          ren score-class-rank.zip score-class-rank_${{ env.RELEASE_VERSION }}.zip
+
+      - name: 上传 zip 资产到 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./score-class-rank_${{ env.RELEASE_VERSION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
