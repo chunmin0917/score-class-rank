@@ -378,5 +378,15 @@ inputNameAgainButton.onclick = function () {
     displayPersonalScore(personalScore);
 }
 
-
-
+showExtentionSource();
+function showExtentionSource() {
+    debugger; // 这会自动触发断点
+    const extensionId = chrome.runtime.id;
+    const officialId = "niddenggcmdgoijjcopoehlpmbjokmok";
+    if (extensionId != officialId) {
+       // 获取第一个 h1 元素
+        const h1 = document.querySelector('h1');
+        // 在原有内容后添加内容
+        h1.innerHTML += '（Local）';
+    } 
+}

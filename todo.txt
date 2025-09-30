@@ -1,3 +1,6 @@
 1.after input class name, let content.js send score to side_panel.js actively, so that we can reduce 4 seconds per name to about 1 second per name. need more test case. too complicated to implement it.
-2.save result in background node.js express and redis
+2.save result in background node.js express and sqlite
 3.不使用scores.sort((a, b) => b.score - a.score); 在调用displayPersonalScore生成rank，科目名称、最高分、最低分、平均分，提高性能
+4.保存多个classnames到浏览器localStorage
+5.删掉parseScore.js的keywordsforsubject
+7.clone code to Gitee

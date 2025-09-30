@@ -2,6 +2,8 @@ let inputElement;
 let searchButton;
 
 console.log("content.js is loaded!");
+// const cookies = document.cookie;
+// console.log("当前页面的 cookie:", cookies);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   //https://x4snq96d.yichafen.com/qz/150UHofcut
