@@ -22,7 +22,7 @@
         "service_worker": "service-worker.js"
     },
     "host_permissions": [
-        "https://github.com/*"
+        "https://gitee.com/*"
     ],
     "permissions": ["sidePanel","tabs", "scripting", "clipboardWrite"]
 }
