@@ -2,40 +2,53 @@
  * depends on: sidePanel.js
  */
 const __CLASSNAMES__ = "classNames";
-const __KEYWORDS_FOR_SUBJECT_URL__ = "https://github.com/chunmin0917/score-class-rank/raw/refs/heads/main/content-scripts/keywordsforsubject.json";
-const __KEYWORDS_FOR_SUBJECT__ = "keywordsforsubject";
+const __KEYWORDS_FOR_SUBJECT_LOCALFILE__ ="keywordsforsubject.json";
+const __KEYWORDS_FOR_SUBJECT_URL__ = "https://gitee.com/chunmin0917/score-class-rank/raw/main/side_panel/"+__KEYWORDS_FOR_SUBJECT_LOCALFILE__;
+//const __KEYWORDS_FOR_SUBJECT__ = "keywordsforsubject";
 
 loadAllConfig();
 
 function loadAllConfig(){
     loadClassNames();
-    loadSubjectFromLocal();
-    loadSubjectFromUrlandSave();
+    loadSubjectFromLocalFile();
+    loadSubjectFromUrl();
 }
 
-function loadSubjectFromUrlandSave() {
-    // Load keywords for subject from URL and save to local storage
-    console.log("loadSubjectFromUrlandSave()");
+function loadSubjectFromUrl() {
+    // Load keywords for subject from URL
+    console.log("loadSubjectFromUrl()");
     fetch(__KEYWORDS_FOR_SUBJECT_URL__)
         .then(response => response.json())
         .then(data => {
             keywordsforsubjectArray = data;
-            localStorage.setItem(__KEYWORDS_FOR_SUBJECT__, JSON.stringify(data));
-            console.log("keywordsforsubjectArray from URL:", keywordsforsubjectArray);
+            console.log("keywordsforsubjectArray from URL:", data);
         })
         .catch(error => {
             console.error("Error loading keywords for subject:", error);
         });
 }
 
-function loadSubjectFromLocal() {
-    console.log("loadSubjectFromLocal()");
-    const subjects = localStorage.getItem(__KEYWORDS_FOR_SUBJECT__);
-    if (subjects) {
-        keywordsforsubjectArray =JSON.parse(subjects);
-        console.log("keywordsforsubjectArray from local:", keywordsforsubjectArray);
-    }      
+function loadSubjectFromLocalFile() {
+    console.log("loadSubjectFromLocalFile()");
+    fetch(__KEYWORDS_FOR_SUBJECT_LOCALFILE__)
+        .then(response => response.json())
+        .then(data => {
+            if(keywordsforsubjectArray.length === 0) keywordsforsubjectArray = data;
+            console.log("keywordsforsubjectArray from local:", data);
+        })
+        .catch(error => {
+            console.error("Error loading keywords for subject:", error);
+        });
 }
+
+// function loadSubjectFromLocal() {
+//     console.log("loadSubjectFromLocal()");
+//     const subjects = localStorage.getItem(__KEYWORDS_FOR_SUBJECT__);
+//     if (subjects) {
+//         keywordsforsubjectArray =JSON.parse(subjects);
+//         console.log("keywordsforsubjectArray from local:", keywordsforsubjectArray);
+//     }      
+// }
 
 function loadClassNames() {
     // Load class names from local storage
