@@ -16,9 +16,21 @@
     </head>
     <body>
         <h1> 请输入班级所有学生的姓名：</h1>
-        <p>1.每行一个姓名</p>
-        <p>2.请将你家小孩的姓名放在<b>第一行</b></p>
-        <textarea id="classNames" rows="8" cols="10" placeholder="陈多多&#10;路人1&#10;路人2&#10;"></textarea><br />
+        <div id="classListDiv" style="display: none;">
+            <div><hr></div>
+            <div>陈多多的班级</div>
+            <div><hr></div>
+        </div>
+        <div style="display: flex;">
+            <textarea id="classNames" rows="8" cols="10"  placeholder="陈多多&#10;路人1&#10;路人2&#10;"></textarea>
+            <div>
+                 <ul style="margin-top: 0;">
+                    <li >每行一个姓名</li>
+                    <li >请将你家小孩的姓名放在<b>第一行</b></li>
+                </ul>
+            </div>
+        </div>
+        <br />
         <button id="doScratch" type="button">开始抓取</button>
         <div id="progress"></div>
         <br>
@@ -36,8 +48,19 @@
             <button id="inputNameAgainBtn" type="button">查询</button>
         </div>
         <br>
-        <a href="../help/help.html" target="_blank" style="font-size: 14px; text-decoration: none;">帮助</a>
+        <div style="display: flex; justify-content: space-between;">
+            <button id="advanceBtn" type="button" >高级设置</button>
+            <a href="../help/help.html" target="_blank" style="font-size: 14px; text-decoration: none;">帮助</a>
+        </div>
+        <div id="advanceDiv" style="display: none;">
+            <ul >
+                <li >自定义科目名称：（多个科目用“空格”分隔）<br>
+                    <input id="userDefinedSubujectInput" type="text" placeholder="科目1 月考 单元测试" title="自定义科目名称"/>
+                </li>
+            </ul>
+        </div>
         <script src="sidepanel.js"></script>
         <script src="saveAndLoadConfig.js"></script>
+        <script src="advanceSetting.js"></script>
     </body>
 </html>

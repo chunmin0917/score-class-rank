@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 
   if(request.messageType === "ParseScore") {
+    console.log("content.js received message subjects:", request.subjects);
     doParseScore (request.name,request.subjects, sendResponse);
   }
   

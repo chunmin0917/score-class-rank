@@ -6,7 +6,8 @@ const resultSummaryDIV = document.getElementById("resultSummary");
 const personalScoreDIV = document.getElementById("personalScore");
 const inputNameAgainDiv = document.getElementById("inputNameAgain");
 const inputNameAgainButton = document.getElementById("inputNameAgainBtn");
-const copyResulButton = document.getElementById("copyResult");
+const copyResultButton = document.getElementById("copyResult");
+const userDefinedSubjectInput = document.getElementById("userDefinedSubujectInput");
 let classNames=[];
 
 //invalidName:  无效姓名，可能是因为输入了不存在的姓名
@@ -19,9 +20,10 @@ const delay =2000;//在发出消息后，等待2秒消息完成，然后执行�
 let searchPageURL;
 let classNamesTAValueIsChanged = false;
 let keywordsforsubjectArray = [];//科目关键词数组
+let allsubjectArray;//用户自定义科目关键词数组+科目关键词数组
 
 classNamesTA.onchange = checkClassNames;
-copyResulButton.onclick = copyResultToClipboard;
+copyResultButton.onclick = copyResultToClipboard;
 
 doScratchButton.onclick = function () {
     if (!classNamesTAValueIsChanged) {
@@ -34,7 +36,7 @@ doScratchButton.onclick = function () {
     if(!checkClassNames()) {
         return;
     }
-    console.log(classNames);
+    console.log("the input names are:" +classNames);
     if(!confirm(`1.建议抓取过程中请勿进行其他操作\n2.预计需要时间${(classNames.length-index)*delay*2/1000}秒.请耐心等待\n是否继续？`)) {
         return;
     }
@@ -54,6 +56,7 @@ doScratchButton.onclick = function () {
             return;
         } 
         setButtonAndInputNameAgainDivStatus();
+        setAllSubjectArray();
         if (classNames.length === 2 && classNames[0] === "DEBUG") {
             doDebugMode();
             return;
@@ -132,7 +135,7 @@ function sendParseScoreMessage() {
         {
             messageType: "ParseScore",
             name: classNames[index],
-            subjects: keywordsforsubjectArray,
+            subjects: allsubjectArray,
         },
         function (response) {
             console.log("Received the response message by ParseScore type: ", response);
@@ -188,12 +191,14 @@ function copyResultToClipboard() {
 
 function setButtonAndInputNameAgainDivStatus(failFlag) {
     if (doScratchButton.disabled) {
+        classNamesTA.disabled = false;
         doScratchButton.disabled = false;
         doScratchButton.innerText = "开始抓取";
         if (!failFlag) {
             inputNameAgainDiv.style.display = "block";
         }
     } else {
+        classNamesTA.disabled = true;
         doScratchButton.disabled = true;
         doScratchButton.innerText = "正在抓取...";
         inputNameAgainDiv.style.display = "none";
@@ -380,7 +385,7 @@ inputNameAgainButton.onclick = function () {
 
 showExtentionSource();
 function showExtentionSource() {
-    debugger; // 这会自动触发断点
+    //debugger; // 这会自动触发断点
     const extensionId = chrome.runtime.id;
     const officialId = "niddenggcmdgoijjcopoehlpmbjokmok";
     if (extensionId != officialId) {
@@ -389,4 +394,15 @@ function showExtentionSource() {
         // 在原有内容后添加内容
         h1.innerHTML += '（Local）';
     } 
+}
+
+function setAllSubjectArray() {
+    let theArray = [];
+    if (userDefinedSubjectInput.value.trim() != "") {
+        theArray = userDefinedSubjectInput.value.split(" ").filter((subject) => subject.trim() !== "");
+    }
+    theArray = theArray.concat(keywordsforsubjectArray);
+    // 使用 Set 去重，并将结果转换回数组
+    allsubjectArray = [...new Set(theArray)];
+    console.log("allsubjectArray:", allsubjectArray);
 }
