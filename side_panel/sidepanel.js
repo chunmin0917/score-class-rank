@@ -8,6 +8,7 @@ const inputNameAgainDiv = document.getElementById("inputNameAgain");
 const inputNameAgainButton = document.getElementById("inputNameAgainBtn");
 const copyResultButton = document.getElementById("copyResult");
 const userDefinedSubjectInput = document.getElementById("userDefinedSubujectInput");
+const waitingTimeForRefreshInput = document.getElementById("waitingTimeForRefreshInput");
 let classNames=[];
 
 //invalidName:  无效姓名，可能是因为输入了不存在的姓名
@@ -16,7 +17,7 @@ let subjectSummary = [];
 let scoreResult =[];
 let currentTabID;
 let index=0;
-const delay =2000;//在发出消息后，等待2秒消息完成，然后执行后续的操作
+let delay =2;//在发出消息后，等待2秒页面刷新，然后执行后续的操作
 let searchPageURL;
 let classNamesTAValueIsChanged = false;
 let keywordsforsubjectArray = [];//科目关键词数组
@@ -37,7 +38,7 @@ doScratchButton.onclick = function () {
         return;
     }
     console.log("the input names are:" +classNames);
-    if(!confirm(`1.建议抓取过程中请勿进行其他操作\n2.预计需要时间${(classNames.length-index)*delay*2/1000}秒.请耐心等待\n是否继续？`)) {
+    if(!confirm(`1.建议抓取过程中请勿进行其他操作\n2.预计需要时间${(classNames.length-index)*delay*2}秒.请耐心等待\n是否继续？`)) {
         return;
     }
     setProgressDIVText();
@@ -100,9 +101,9 @@ function checkClassNames() {
 function setProgressDIVText() {
     progressDIV.innerHTML = `
     当前进度 <span class="highlightblue">${index}/${classNames.length}</span>,
-    剩余时间 <span class="highlightblue">${(classNames.length - index) * delay * 2 / 1000}秒</span>
+    剩余时间 <span class="highlightblue">${(classNames.length - index) * delay * 2 }秒</span>
     `;
-    //progressDIV.innerText = `当前进度${index}/${classNames.length},剩余时间${(classNames.length-index)*delay*2/1000}秒`;
+    //progressDIV.innerText = `当前进度${index}/${classNames.length},剩余时间${(classNames.length-index)*delay*2}秒`;
 }
 
 function sendInputAndSearchMessage() {
@@ -121,9 +122,9 @@ function sendInputAndSearchMessage() {
                 return;
             }
             setTimeout(() => {
-                console.log(`延迟 ${delay / 1000} 秒后执行`);
+                console.log(`延迟 ${delay} 秒后执行`);
                 sendParseScoreMessage();
-            }, delay);
+            }, delay*1000);
         }
     );
 }
@@ -170,9 +171,9 @@ function goBackToMainPage() {
         return;
     }
     setTimeout(() => {
-        console.log(`延迟 ${delay / 1000} 秒后执行`);
+        console.log(`延迟 ${delay } 秒后执行`);
         sendInputAndSearchMessage();
-    }, delay);
+    }, delay*1000);
 }
 
 function copyResultToClipboard() {

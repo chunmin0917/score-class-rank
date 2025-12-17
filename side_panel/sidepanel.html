@@ -43,18 +43,21 @@
             <br>
         </div>
         <div id="inputNameAgain" style="display: none;">
-            <p><b>如果第一行不是你家小孩，请再次输入你家小孩的姓名，多个姓名用“空格”分隔</b></p>
+            <p><b>如果第一行不是你家小孩，请再次输入你家小孩的姓名，多个姓名用“空格”分隔：</b></p>
             <input id="inputNameAgainInput" type="text" placeholder="陈多多 陈欢欢 陈豆豆" />
             <button id="inputNameAgainBtn" type="button">查询</button>
         </div>
         <br>
-        <a href="" style="font-size: 14px; text-decoration: none;" id="advanceHref">高级设置</a>
+        <a href="" style="text-decoration: none;" id="advanceHref">高级设置</a>
         &nbsp;&nbsp;
-        <a href="../help/help.html" target="_blank" style="font-size: 14px; text-decoration: none;">帮助</a>
+        <a href="../help/help.html" target="_blank" style="text-decoration: none;">帮助</a>
         <div id="advanceDiv" style="display: none;">
             <ul >
                 <li >自定义科目名称：（多个科目用“空格”分隔）<br>
                     <input id="userDefinedSubujectInput" type="text" placeholder="科目1 月考 单元测试" title="自定义科目名称"/>
+                </li>
+                <li >等待页面刷新时间：（取值范围2-5秒）<br>
+                    <input id="waitingTimeForRefreshInput" type="text" placeholder="2" title="如果页面刷新速度很慢，可以增大该值。默认2秒，最大不超过5秒。"/>
                 </li>
             </ul>
         </div>

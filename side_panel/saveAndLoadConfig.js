@@ -4,6 +4,7 @@
 const __CLASSNAMES__ = "classNameAndMembers";
 const __KEYWORDS_FOR_SUBJECT__ = "keywordsForSubjects";
 const __USER_DEFINED_SUBJECT__ = "userDefinedSubjects";
+const __WAITING_TIME_FOR_REFRESH__ = "waitingTimeForRefresh";
 const KEYWORDS_FOR_SUBJECT_LOCALFILE ="keywordsforsubject.json";
 const KEYWORDS_FOR_SUBJECT_URL = "https://gitee.com/chunmin0917/score-class-rank/raw/main/side_panel/"+KEYWORDS_FOR_SUBJECT_LOCALFILE;
 const TIME_INTERVAL_FOR_FETCH_SUBJECT = 5*60*1000;// fetch subject from URL every 5 minutes
@@ -12,12 +13,14 @@ const SUBJECT_FROM_LOCALFILE ="LOCALFILE";
 let  subjectInLocalStorage = {from:"", lastFetchedTime:new Date().toISOString(), subjects:[]};
 
 userDefinedSubjectInput.onchange = saveUserDefinedSubjects;
+waitingTimeForRefreshInput.onchange = saveWaitingTimeForRefresh;
 
 loadAllConfig();
 
 function loadAllConfig(){
     loadClassNames();
-    loadUserDefinedSubjects()
+    loadUserDefinedSubjects();
+    loadWaitingTimeForRefresh();
     if(needFetchSubject()) {
         loadSubjectFromLocalFile();
         loadSubjectFromUrl();
@@ -102,6 +105,28 @@ function loadUserDefinedSubjects() {
     const values = localStorage.getItem(__USER_DEFINED_SUBJECT__);
     if (values) {
         userDefinedSubujectInput.value = values;
+    }   
+}
+
+function saveWaitingTimeForRefresh() {
+    if(waitingTimeForRefreshInput.value.trim() === "") {
+        localStorage.removeItem(__WAITING_TIME_FOR_REFRESH__);
+        return;
+    }
+    let waitingTime = parseInt(waitingTimeForRefreshInput.value);
+    if(isNaN(waitingTime) || waitingTime <2 || waitingTime >5) {
+        alert("等待页面刷新时间取值范围为2-5秒，请重新输入！");
+        return;
+    }
+    localStorage.setItem(__WAITING_TIME_FOR_REFRESH__, waitingTime);
+    delay = waitingTime;
+}
+
+function loadWaitingTimeForRefresh() {
+    const values = localStorage.getItem(__WAITING_TIME_FOR_REFRESH__);
+    if (values) {
+        waitingTimeForRefreshInput.value = values;
+        delay = values;
     }   
 }
 
