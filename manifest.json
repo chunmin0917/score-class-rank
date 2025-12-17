@@ -15,7 +15,7 @@
             "matches": [
               "<all_urls>"
             ],
-            "js": ["content-scripts/parseScore.js", "content-scripts/content.js"]
+            "js": ["content_scripts/parseScore.js", "content_scripts/content.js"]
         }
     ],
     "background": {
