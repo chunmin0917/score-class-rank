@@ -1,13 +1,14 @@
-const advanceBtn = document.getElementById("advanceBtn");
+const advanceHref = document.getElementById("advanceHref");
 const advanceDiv = document.getElementById("advanceDiv");
 
-advanceBtn.onclick = switchAdvanceDiv;
+advanceHref.onclick = switchAdvanceDiv;
 
 function switchAdvanceDiv() {
     if (advanceDiv.style.display === "none") {
         advanceDiv.style.display = "block";
     } else {
         advanceDiv.style.display = "none";
-    }   
+    }  
+    return false;// 阻止默认跳转行为
 }
 
