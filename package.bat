@@ -5,7 +5,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 set OUTPUT=score-class-rank.zip
 
 :: 定义要打包的内容
-set FILES_TO_ZIP=_locales side_panel help content-scripts icon128.png manifest.json service-worker.js
+set FILES_TO_ZIP=_locales side_panel help content_scripts icon128.png manifest.json service-worker.js
 
 :: 遍历文件列表并拼接成 PowerShell 可识别的逗号分隔字符串
 set PATHS=
