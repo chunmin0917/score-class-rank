@@ -1,5 +1,5 @@
 /**
- * depends on: sidePanel.js`
+ * depends on other js files
  */
 const __CLASSNAMES__ = "classNameAndMembers";
 const __KEYWORDS_FOR_SUBJECT__ = "keywordsForSubjects";
@@ -10,15 +10,19 @@ const KEYWORDS_FOR_SUBJECT_URL = "https://gitee.com/chunmin0917/score-class-rank
 const TIME_INTERVAL_FOR_FETCH_SUBJECT = 5*60*1000;// fetch subject from URL every 5 minutes
 const SUBJECT_FROM_URL = "URL";
 const SUBJECT_FROM_LOCALFILE ="LOCALFILE";
+const NA = "";//"N/A"; // not available
 let  subjectInLocalStorage = {from:"", lastFetchedTime:new Date().toISOString(), subjects:[]};
+//{"classNames":[{"className":"陈多多的班级","members":["陈多多","陈欢欢","陈豆豆"]}]}
+let  classNamesInLocalStorage = {classNames:[]} ;
 
 userDefinedSubjectInput.onchange = saveUserDefinedSubjects;
 waitingTimeForRefreshInput.onchange = saveWaitingTimeForRefresh;
+saveClassNamesBtn.onclick = saveClass;
 
 loadAllConfig();
 
 function loadAllConfig(){
-    loadClassNames();
+    loadAllClassNames();
     loadUserDefinedSubjects();
     loadWaitingTimeForRefresh();
     if(needFetchSubject()) {
@@ -131,25 +135,49 @@ function loadWaitingTimeForRefresh() {
 }
 
 
-
-
-
-function loadClassNames() {
+function loadAllClassNames() {
     // Load class names from local storage
-    console.log("loadClassNames() ");
-    const classNames = localStorage.getItem(__CLASSNAMES__);
-    if (classNames) {
-        classNamesTA.value = classNames;
-        classNamesTAValueIsChanged = true;
-    }      
+    console.log("loadAllClassNames() ");
+    if (!localStorage.getItem(__CLASSNAMES__)) return;
+    classNamesInLocalStorage = JSON.parse(localStorage.getItem(__CLASSNAMES__));   
+    if(classNamesInLocalStorage.classNames.length ===0) return;
+    const theFirstClassName = classNamesInLocalStorage.classNames[0];
+    studentNamesTA.value = theFirstClassName.members.join("\n");
+    studentNamesTAValueIsChanged = true;
+    if(NA !== theFirstClassName.className) {
+        constructClassListDiv();
+        classListDiv.style.display = "block";
+    }
 }
 
-function saveClassName() {
-    // Save class name to local storage
-    // console.log("saveClassName()");
-    // let classNames = classNamesTA.value.split("\n").filter((name) => name.trim() !== "");
-    // classNames = [...new Set(classNames)];
-    // if (classNames.length > 0) {
-    //     localStorage.setItem(__CLASSNAMES__, classNamesTA.value);
-    // }
+//when click save class button
+function saveClass() {
+    if(!checkStudentNames()) return;
+    const classname = promptClassName(studentNames[0] + "的班级");
+    if (!classname) return;
+    if(classNamesInLocalStorage.classNames.length ===1 && classNamesInLocalStorage.classNames[0].className === NA) {
+        classNamesInLocalStorage.classNames.pop();//remove the default one
+    }   
+    classNamesInLocalStorage.classNames.push({className: classname, members: studentNames});
+    localStorage.setItem(__CLASSNAMES__, JSON.stringify(classNamesInLocalStorage));
+    constructClassListDiv();
+    classListDiv.style.display = "block";
+}
+
+/**
+ * when finish doing scratch,
+ * if no class saved yet, save the current one with default class name NA = ""
+ * */
+function saveClassIfNecessary() {
+    if(classNamesInLocalStorage.classNames.length ===0) {
+        classNamesInLocalStorage.classNames.push({className:NA, members:studentNames});
+        localStorage.setItem(__CLASSNAMES__, JSON.stringify(classNamesInLocalStorage));
+        return;
+    }
+
+    if(classNamesInLocalStorage.classNames.length ===1 && classNamesInLocalStorage.classNames[0].className === NA) {
+        classNamesInLocalStorage.classNames[0].members = studentNames;
+        localStorage.setItem(__CLASSNAMES__, JSON.stringify(classNamesInLocalStorage));
+        return;
+    }   
 }

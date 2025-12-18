@@ -15,18 +15,27 @@
         </style>
     </head>
     <body>
-        <h1> 请输入班级所有学生的姓名：</h1>
+        <h1 style="font-size: 22px;"> 请输入班级所有学生的姓名：</h1>
         <div id="classListDiv" style="display: none;">
-            <div><hr></div>
-            <div>陈多多的班级</div>
-            <div><hr></div>
+            <hr>
+            <div id="sampleRow" style="display: flex;display: none;"> <!-- 样例行 -->
+                <span style="width: 180px;"><a href="#" title="选择班级">className</a> </span> <!-- 班级名最多10个汉字 -->
+                &nbsp;&nbsp;
+                <a href="#" >重命名</a>
+                &nbsp;&nbsp;
+                <a href="#" >删除</a>
+            </div>
+            <div id="classListDivContent">
+            </div>
+            <hr>
         </div>
         <div style="display: flex;">
-            <textarea id="classNames" rows="8" cols="10"  placeholder="陈多多&#10;路人1&#10;路人2&#10;"></textarea>
+            <textarea id="studentNames" rows="8" cols="10"  placeholder="陈多多&#10;路人1&#10;路人2&#10;"></textarea>
             <div>
                  <ul style="margin-top: 0;">
                     <li >每行一个姓名</li>
                     <li >请将你家小孩的姓名放在<b>第一行</b></li>
+                    <li >默认支持小初高所有科目的抓取，也可以在“高级设置”中自定义科目</li>
                 </ul>
             </div>
         </div>
@@ -37,6 +46,7 @@
         <div id="allResult" style="display: none;">
             <span class="highlightblue">抓取结果：</span><br>
             <div id="resultSummary"></div>
+            <div class="highlightred">***如果科目没能抓取成功，请在“高级设置”中自定义科目。</div>
             <br>
             <span class="highlightblue">名次结果：</span><button id="copyResult" type="button">复制</button><br>
             <div id="personalScore"></div>
@@ -48,13 +58,16 @@
             <button id="inputNameAgainBtn" type="button">查询</button>
         </div>
         <br>
-        <a href="" style="text-decoration: none;" id="advanceHref">高级设置</a>
+        <a href="" id="advanceHref">高级设置</a>
         &nbsp;&nbsp;
-        <a href="../help/help.html" target="_blank" style="text-decoration: none;">帮助</a>
+        <a href="../help/help.html" target="_blank" >帮助</a>
         <div id="advanceDiv" style="display: none;">
             <ul >
                 <li >自定义科目名称：（多个科目用“空格”分隔）<br>
                     <input id="userDefinedSubujectInput" type="text" placeholder="科目1 月考 单元测试" title="自定义科目名称"/>
+                </li>
+                <li title="如果你有多个班级，可以将多个班级的学生名单保存到浏览器。单个班级不需要此功能。注意：更换浏览器会丢失保存的班级。">
+                    保存当前班级学生名单到浏览器：<button id="saveClassNamesBtn" type="button">保存班级</button>
                 </li>
                 <li >等待页面刷新时间：（取值范围2-5秒）<br>
                     <input id="waitingTimeForRefreshInput" type="text" placeholder="2" title="如果页面刷新速度很慢，可以增大该值。默认2秒，最大不超过5秒。"/>
@@ -62,7 +75,7 @@
             </ul>
         </div>
         <script src="sidepanel.js"></script>
-        <script src="saveAndLoadConfig.js"></script>
         <script src="advanceSetting.js"></script>
+        <script src="saveAndLoadConfig.js"></script>
     </body>
 </html>

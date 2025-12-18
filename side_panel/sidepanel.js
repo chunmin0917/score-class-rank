@@ -1,5 +1,5 @@
 const doScratchButton = document.getElementById("doScratch");
-const classNamesTA = document.getElementById("classNames");
+const studentNamesTA = document.getElementById("studentNames");
 const progressDIV = document.getElementById("progress");
 const allResultDIV = document.getElementById("allResult");
 const resultSummaryDIV = document.getElementById("resultSummary");
@@ -9,7 +9,9 @@ const inputNameAgainButton = document.getElementById("inputNameAgainBtn");
 const copyResultButton = document.getElementById("copyResult");
 const userDefinedSubjectInput = document.getElementById("userDefinedSubujectInput");
 const waitingTimeForRefreshInput = document.getElementById("waitingTimeForRefreshInput");
-let classNames=[];
+const saveClassNamesBtn = document.getElementById("saveClassNamesBtn");
+const classListDiv = document.getElementById("classListDiv");
+let studentNames=[];
 
 //invalidName:  无效姓名，可能是因为输入了不存在的姓名
 let resultSummary = {totalName:0, validName:0, invalidName:0,invalidNames:[]};
@@ -19,26 +21,26 @@ let currentTabID;
 let index=0;
 let delay =2;//在发出消息后，等待2秒页面刷新，然后执行后续的操作
 let searchPageURL;
-let classNamesTAValueIsChanged = false;
+let studentNamesTAValueIsChanged = false;
 let keywordsforsubjectArray = [];//科目关键词数组
 let allsubjectArray;//用户自定义科目关键词数组+科目关键词数组
 
-classNamesTA.onchange = checkClassNames;
+studentNamesTA.onchange = studentNamesTAValueChangedFunc;
 copyResultButton.onclick = copyResultToClipboard;
 
 doScratchButton.onclick = function () {
-    if (!classNamesTAValueIsChanged) {
+    if (!studentNamesTAValueIsChanged) {
         if(!confirm(`输入的姓名没有改变，是否继续？`)) {
             return;
         }
     }
     index = 0;
     scoreResult = [];
-    if(!checkClassNames()) {
+    if(!checkStudentNames()) {
         return;
     }
-    console.log("the input names are:" +classNames);
-    if(!confirm(`1.建议抓取过程中请勿进行其他操作\n2.预计需要时间${(classNames.length-index)*delay*2}秒.请耐心等待\n是否继续？`)) {
+    console.log("the input names are:" +studentNames);
+    if(!confirm(`1.建议抓取过程中请勿进行其他操作\n2.预计需要时间${(studentNames.length-index)*delay*2}秒.请耐心等待\n是否继续？`)) {
         return;
     }
     setProgressDIVText();
@@ -58,53 +60,14 @@ doScratchButton.onclick = function () {
         } 
         setButtonAndInputNameAgainDivStatus();
         setAllSubjectArray();
-        if (classNames.length === 2 && classNames[0] === "DEBUG") {
+        if (studentNames.length === 2 && studentNames[0] === "DEBUG") {
             doDebugMode();
             return;
         }
         sendInputAndSearchMessage();
     });
-    classNamesTAValueIsChanged = false;
+    studentNamesTAValueIsChanged = false;
 };
-
-function isInternalPage(url) {
-    return url.startsWith('chrome://') ||
-           url.startsWith('chrome-extension://') ||
-           url.startsWith('edge://') ||
-           url.startsWith('about:') ||
-           url.startsWith('moz-extension://');
-}
-
-function checkClassNames() {
-    classNamesTAValueIsChanged = true;
-    classNames = classNamesTA.value.split("\n").filter((name) => name.trim() !== "");
-    // 使用 Set 去重，并将结果转换回数组
-    classNames = [...new Set(classNames)];
-    for (let i = 0; i < classNames.length; i++) {
-        if (classNames[i].length < 2 || classNames[i].length > 5) {
-            alert(`第${i+1}行姓名"${classNames[i]}"长度不符合要求，请检查！长度应在2到5个字符之间。`);
-            return false;
-        }
-    }
-    if (classNames.length === 0) {
-        alert("请输入至少一个姓名！");
-        return false;
-    }
-    if (classNames.length > 100) {
-        alert("姓名数量超过100个，请减少！");
-        return false;
-    }
-    setProgressDIVText()
-    return true;
-}
-
-function setProgressDIVText() {
-    progressDIV.innerHTML = `
-    当前进度 <span class="highlightblue">${index}/${classNames.length}</span>,
-    剩余时间 <span class="highlightblue">${(classNames.length - index) * delay * 2 }秒</span>
-    `;
-    //progressDIV.innerText = `当前进度${index}/${classNames.length},剩余时间${(classNames.length-index)*delay*2}秒`;
-}
 
 function sendInputAndSearchMessage() {
     console.log("index is ", index);
@@ -112,7 +75,7 @@ function sendInputAndSearchMessage() {
         currentTabID,
         {
             messageType: "InputAndSearch",
-            name: classNames[index],
+            name: studentNames[index],
         },
         function (response) {
             console.log("Received the response message by InputAndSearch type: ", response);
@@ -135,7 +98,7 @@ function sendParseScoreMessage() {
         currentTabID,
         {
             messageType: "ParseScore",
-            name: classNames[index],
+            name: studentNames[index],
             subjects: allsubjectArray,
         },
         function (response) {
@@ -158,22 +121,79 @@ function goBackToMainPage() {
     });
     index++;
     setProgressDIVText()
-    if (index >= classNames.length) {
+    if (index >= studentNames.length) {
         index =0
         setButtonAndInputNameAgainDivStatus();
         parseRankResult();
         displayRankResult();
         copyResultToClipboard() ;
-        if (typeof saveClassName === "function") {
-            // 函数存在，可以安全调用
-            saveClassName();
-        } 
+        saveClassIfNecessary();
         return;
     }
     setTimeout(() => {
         console.log(`延迟 ${delay } 秒后执行`);
         sendInputAndSearchMessage();
     }, delay*1000);
+}
+
+function studentNamesTAValueChangedFunc() {
+    studentNamesTAValueIsChanged = true;
+    if(checkStudentNames()) {
+        setProgressDIVText();
+    }
+}
+
+function checkStudentNames() {
+    studentNames = studentNamesTA.value.split("\n").filter((name) => name.trim() !== "");
+    // 使用 Set 去重，并将结果转换回数组
+    studentNames = [...new Set(studentNames)];
+    for (let i = 0; i < studentNames.length; i++) {
+        if (studentNames[i].length < 2 || studentNames[i].length > 24) {
+            alert(`第${i+1}行姓名"${studentNames[i]}"长度不符合要求，请检查！长度应在2到24个字符之间。`);
+            return false;
+        }
+    }
+    if (studentNames.length === 0) {
+        alert("请输入至少一个姓名！");
+        return false;
+    }
+    if (studentNames.length > 100) {
+        alert("姓名数量超过100个，请减少！");
+        return false;
+    }
+    return true;
+}
+
+function setProgressDIVText() {
+    progressDIV.innerHTML = `
+    当前进度 <span class="highlightblue">${index}/${studentNames.length}</span>,
+    剩余时间 <span class="highlightblue">${(studentNames.length - index) * delay * 2 }秒</span>
+    `;
+    //progressDIV.innerText = `当前进度${index}/${classNames.length},剩余时间${(classNames.length-index)*delay*2}秒`;
+}
+
+function isInternalPage(url) {
+    return url.startsWith('chrome://') ||
+           url.startsWith('chrome-extension://') ||
+           url.startsWith('edge://') ||
+           url.startsWith('about:') ||
+           url.startsWith('moz-extension://');
+}
+
+function setButtonAndInputNameAgainDivStatus(failFlag) {
+    if (doScratchButton.disabled) {
+        studentNamesTA.disabled = false;
+        doScratchButton.disabled = false;
+        doScratchButton.innerText = "开始抓取";
+        if (!failFlag) {
+            inputNameAgainDiv.style.display = "block";
+        }
+    } else {
+        studentNamesTA.disabled = true;
+        doScratchButton.disabled = true;
+        doScratchButton.innerText = "正在抓取...";
+        inputNameAgainDiv.style.display = "none";
+    }
 }
 
 function copyResultToClipboard() {
@@ -188,22 +208,6 @@ function copyResultToClipboard() {
         console.error("复制抓取结果到剪贴板失败：", err);
         alert("抓取完成，复制抓取结果到剪贴板失败！");
     });
-}
-
-function setButtonAndInputNameAgainDivStatus(failFlag) {
-    if (doScratchButton.disabled) {
-        classNamesTA.disabled = false;
-        doScratchButton.disabled = false;
-        doScratchButton.innerText = "开始抓取";
-        if (!failFlag) {
-            inputNameAgainDiv.style.display = "block";
-        }
-    } else {
-        classNamesTA.disabled = true;
-        doScratchButton.disabled = true;
-        doScratchButton.innerText = "正在抓取...";
-        inputNameAgainDiv.style.display = "none";
-    }
 }
 
 function displayRankResult() {
@@ -338,7 +342,7 @@ function parseRankResult() {
 // Debug Mode 下， 主页直接是classNames[1]成绩查询结果页面
 function doDebugMode() {
     console.log("Debug mode is activated.");
-    classNames.shift(); // 移除第一个元素 'DEBUG'
+    studentNames.shift(); // 移除第一个元素 'DEBUG'
     sendParseScoreMessage();
 }
 
