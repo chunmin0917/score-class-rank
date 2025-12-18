@@ -1,0 +1,1 @@
+update "version" in manifest.json file
