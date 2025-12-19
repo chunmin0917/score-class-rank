@@ -95,7 +95,7 @@ function saveSubjectInLocalStorage(from, subjects) {
 }
 
 function setSubjectInputTitle() {
-    userDefinedSubujectInput.title = "如果成绩结果页面为'单元测试 98'，可以输入：'单元测试'作为自定义科目名称。缺省支持的科目名称为："
+    userDefinedSubujectInput.title = "如果成绩结果页面为'单元测试 98'，可以输入：'单元测试'作为自定义科目名称。默认支持的科目名称为："
     + keywordsforsubjectArray
     +"。";
 }
