@@ -7,7 +7,7 @@ const __USER_DEFINED_SUBJECT__ = "userDefinedSubjects";
 const __WAITING_TIME_FOR_REFRESH__ = "waitingTimeForRefresh";
 const KEYWORDS_FOR_SUBJECT_LOCALFILE ="keywordsforsubject.json";
 const KEYWORDS_FOR_SUBJECT_URL = "https://gitee.com/chunmin0917/score-class-rank/raw/main/side_panel/"+KEYWORDS_FOR_SUBJECT_LOCALFILE;
-const TIME_INTERVAL_FOR_FETCH_SUBJECT = 5*60*1000;// fetch subject from URL every 5 minutes
+const TIME_INTERVAL_FOR_FETCH_SUBJECT = 24*60*60*1000;// fetch subject from URL every 1 day
 const SUBJECT_FROM_URL = "URL";
 const SUBJECT_FROM_LOCALFILE ="LOCALFILE";
 const NA = "";//"N/A"; // not available
@@ -40,7 +40,7 @@ function needFetchSubject() {
         if(subjectInLocalStorage.from && subjectInLocalStorage.from === SUBJECT_FROM_URL) {
             if(subjectInLocalStorage.lastFetchedTime) {
                 const fetchTime = new Date(subjectInLocalStorage.lastFetchedTime).getTime();
-                if ((Date.now() - fetchTime) < TIME_INTERVAL_FOR_FETCH_SUBJECT) {
+                if (Math.abs(Date.now() - fetchTime) < TIME_INTERVAL_FOR_FETCH_SUBJECT) {
                     return false;
                 }   
             }

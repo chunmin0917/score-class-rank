@@ -1,5 +1,7 @@
 test/测试数据.xls
 score-class-rank*.zip
-playground-3.mongodb.js
-extension-config
 .gitignore
+test/testfetch.js
+temp/
+test/full_test.js
+test/test.html

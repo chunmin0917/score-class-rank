@@ -1,4 +1,4 @@
-console.log("parseScore.js is loaded!");
+console.log("parseScore.js is injected!");
 
 function doParseScore(name,subjects, sendResponse) {
     const bodyText = document.body.innerText;

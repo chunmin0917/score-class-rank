@@ -205,7 +205,7 @@ function copyResultToClipboard() {
         console.log("抓取结果已成功复制到剪贴板！");
         alert("抓取完成，结果已经保存到了剪贴板，可以直接粘贴！");
     }).catch(err => {
-        console.error("复制抓取结果到剪贴板失败：", err);
+        console.log("复制抓取结果到剪贴板失败：", err);
         alert("抓取完成，复制抓取结果到剪贴板失败！");
     });
 }
@@ -238,15 +238,20 @@ function displayPersonalScore(personalScore) {
             scoreString += "<br>";
             continue;
         }
+
+        scoreString += '<table border="1" style="border-collapse: collapse;">';
+        scoreString += '<tr><th>科目</th><th>成绩</th><th>名次</th><th>最高分</th><th>最低分</th><th>平均分</th></tr>';
         for (let j = 0; j < oneScore.length; j++) {
-            scoreString += `${oneScore[j].subject}:`;
-            scoreString += `${oneScore[j].score}，`;
-            scoreString += `名次：${oneScore[j].rank}，`;
-            scoreString += `最高分：${subjectSummary[j].max}，`;
-            scoreString += `最低分：${subjectSummary[j].min}，`;
-            scoreString += `平均分：${subjectSummary[j].average}。`;
-            scoreString += "<br>";
+            scoreString += '<tr>';
+            scoreString += `<td>${oneScore[j].subject}</td>`;
+            scoreString += `<td>${oneScore[j].score}</td>`;
+            scoreString += `<td>${oneScore[j].rank}</td>`;
+            scoreString += `<td>${subjectSummary[j].max}</td>`;
+            scoreString += `<td>${subjectSummary[j].min}</td>`;
+            scoreString += `<td>${subjectSummary[j].average}</td>`;
+            scoreString += '</tr>';
         }
+        scoreString += '</table>';
         scoreString += "<br>";
     }
     personalScoreDIV.innerHTML = scoreString;

@@ -3,6 +3,7 @@
     <head>
         <title>班级名次抓取</title>
         <meta charset="utf-8" />
+        <script src="vanilla.js"></script>
         <style>
             .highlightred {
                 color: red;
@@ -11,6 +12,9 @@
             .highlightblue {
                 color: blue;
                 font-weight: bold;
+            }
+            th, td {
+                padding: 0 4px;
             }
         </style>
     </head>
@@ -30,7 +34,7 @@
             <hr>
         </div>
         <div style="display: flex;">
-            <textarea id="studentNames" rows="8" cols="10"  placeholder="陈多多&#10;路人1&#10;路人2&#10;"></textarea>
+            <textarea id="studentNames" rows="12" cols="12"  placeholder="陈多多&#10;路人1&#10;路人2&#10;"></textarea>
             <div>
                  <ul style="margin-top: 0;">
                     <li >每行一个姓名</li>

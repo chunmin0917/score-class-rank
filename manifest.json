@@ -15,7 +15,7 @@
             "matches": [
               "<all_urls>"
             ],
-            "js": ["content_scripts/parseScore.js", "content_scripts/content.js"]
+            "js": ["content_scripts/parseScore.js", "content_scripts/inputAndSearch.js"]
         }
     ],
     "background": {
@@ -24,5 +24,5 @@
     "host_permissions": [
         "https://gitee.com/*"
     ],
-    "permissions": ["sidePanel","tabs", "scripting", "clipboardWrite"]
+    "permissions": ["sidePanel","tabs","activeTab", "scripting", "storage","unlimitedStorage","clipboardWrite"]
 }

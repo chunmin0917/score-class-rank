@@ -1,14 +1,12 @@
 let inputElement;
 let searchButton;
 
-console.log("content.js is loaded!");
-// const cookies = document.cookie;
-// console.log("当前页面的 cookie:", cookies);
+console.log("inputAndSearch.js is injected!");
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   //https://x4snq96d.yichafen.com/qz/150UHofcut
-  console.log("content.js received message name:", request.name);
-  console.log("content.js received message type:", request.messageType);
+  console.log("inputAndSearch.js received message name:", request.name);
+  console.log("inputAndSearch.js received message type:", request.messageType);
 
   if(request.messageType === "InputAndSearch") {
     doInputAndSearch (request.name, sendResponse);

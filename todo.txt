@@ -2,4 +2,59 @@
 2.save result in background node.js express and sqlite
 3.不使用scores.sort((a, b) => b.score - a.score); 在调用displayPersonalScore生成rank，科目名称、最高分、最低分、平均分，提高性能
 4.启用aws后台服务，提供用户登录服务
-5.修改时间间隔为正5分钟到绝对值5分钟
+6.make isInspectableUrl function in both service worker and sidepanel
+7.添加“停止”按钮
+8. use chrome extension storage instead of localstorage
+9 add scratch history functionality
+
+
+function isInspectableUrl(url) {
+  if (!url) return false;
+  const restrictedSchemes = [
+    'chrome://',
+    'chrome-extension://',
+    'edge://',
+    'edge-extension://',
+    'about:',
+    'file://',
+    'data:',
+    'javascript:',
+    'blob:'
+  ];
+  return !restrictedSchemes.some((scheme) => url.startsWith(scheme));
+}
+
+
+window.addEventListener('unload', () => { //can work，但是直接关闭浏览器时不触发
+window.addEventListener('beforeunload', (e) => { //can not work
+document.addEventListener('visibilitychange', function() {//更可靠，优先选择
+
+window.addEventListener('unload', () => {
+    localStorage.setItem("unload", 'Side Panel 页面已销毁 from unload at ' + new Date().toLocaleString());
+    //alert("unload");
+    //loadSubjectFromUrl();//can not work
+    console.log('Side Panel 页面已销毁');
+});
+
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden') {
+    // Side panel 被关闭或切换到其他标签
+    // 在这里执行你的清理或保存操作
+    console.log('Side panel closed or hidden');
+    localStorage.setItem("visibilitychange", 'Side Panel 页面已销毁 from visibilitychange at ' + new Date().toLocaleString());
+
+    const result = navigator.sendBeacon(KEYWORDS_FOR_SUBJECT_URL,"test beacon");
+    console.log("beacon send result:", result);
+
+    console.log("loadSubjectFromUrl()");
+    fetch(KEYWORDS_FOR_SUBJECT_URL)
+        .then(response => response.json())
+        .then(data => {
+            localStorage.setItem("visibilitychange-value",  data+ new Date().toLocaleString());
+        })
+        .catch(error => {
+            console.error("Error loading keywords for subject:", error);
+        });
+
+  }
+});
