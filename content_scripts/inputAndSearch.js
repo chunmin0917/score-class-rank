@@ -5,15 +5,14 @@ console.log("inputAndSearch.js is injected!");
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   //https://x4snq96d.yichafen.com/qz/150UHofcut
-  console.log("inputAndSearch.js received message name:", request.name);
-  console.log("inputAndSearch.js received message type:", request.messageType);
+  console.log("the injected js receive message name:", request.name);
+  console.log("the injected js receive message type:", request.messageType);
 
   if(request.messageType === "InputAndSearch") {
     doInputAndSearch (request.name, sendResponse);
   }
 
   if(request.messageType === "ParseScore") {
-    console.log("content.js received message subjects:", request.subjects);
     doParseScore (request.name,request.subjects, sendResponse);
   }
   
@@ -25,9 +24,9 @@ function doInputAndSearch (name, sendResponse) {
     sendResponse({ status: "ERROR", detailMessage: "当前页面不是成绩查询页面！" }); 
     return;
   }
+  sendResponse({ status: "OK"}); 
   inputElement.value = name;
   searchButton.click();
-  sendResponse({ status: "OK"}); 
 }
 
 function isScoreSearchWebPage() {
@@ -55,7 +54,7 @@ function isScoreSearchWebPage() {
 
 function findNameTextInput() {
   //找到：姓名text input
-  const inputElements = document.querySelectorAll('input[type="text"]');
+  const inputElements = document.querySelectorAll('input[type="text"], input[type="search"]');
   console.log("查找姓名text input个数为："+inputElements.length);
   if (inputElements.length ===0) {
     return null;
@@ -87,12 +86,19 @@ function isNameTextInput(nameInput) {
     return true;
   }
 
+  if (nameInput.id) {
+    const label = document.querySelector(`label[for="${nameInput.id}"]`);
+    if (label && label.innerText.includes("姓名")) {
+      return true;
+    }
+  }
+
   return false;
 }
 
 function findSearchButton() {
   //找到：查询按钮
-  const buttonElements = document.querySelectorAll('input[type="button"], button');
+  const buttonElements = document.querySelectorAll('input[type="button"], input[type="submit"], button');
   console.log("查询button的个数："+buttonElements.length);
   if (buttonElements.length ===0) {
     return null;
@@ -109,12 +115,16 @@ function findSearchButton() {
 }
 
 function isSearchButton(buttonElement) {
-  if (
-    (buttonElement.value && buttonElement.value.includes("查询")) || // 检查 value 属性
-    (buttonElement.innerText && buttonElement.innerText.includes("查询")) || // 检查 innerText
-    (buttonElement.textContent && buttonElement.textContent.includes("查询")) // 检查 textContent
-  ) {
-    return true;
-  }
-  return false;
+  // if (
+  //   (buttonElement.value && buttonElement.value.includes("查询")) || // 检查 value 属性
+  //   (buttonElement.innerText && buttonElement.innerText.includes("查询")) || // 检查 innerText
+  //   (buttonElement.textContent && buttonElement.textContent.includes("查询")) // 检查 textContent
+  // ) {
+  //   return true;
+  // }
+  // return false;
+  const value = (buttonElement.value || "").trim();
+  const text = (buttonElement.innerText || buttonElement.textContent || "").trim();
+  const keywordPattern = /查询|提交/;
+  return keywordPattern.test(value) || keywordPattern.test(text);
 }
