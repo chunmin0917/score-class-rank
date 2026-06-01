@@ -1,5 +1,7 @@
 const advanceHref = document.getElementById("advanceHref");
 const advanceDiv = document.getElementById("advanceDiv");
+const classListDivContent = document.getElementById('classListDivContent');
+const classRowTemplate = document.getElementById('classListTemplate');
 
 advanceHref.onclick = switchAdvanceDiv;
 
@@ -14,18 +16,19 @@ function switchAdvanceDiv() {
 
 // 构建班级列表DIV
 function constructClassListDiv() {
-    const classListDivContent = document.getElementById('classListDivContent');
-    const rowHtml = document.getElementById('sampleRow').innerHTML;
     classListDivContent.innerHTML = '';  // 清空现有内容
     // 遍历班级，生成行
     classNamesInLocalStorage.classNames.forEach((item, idx) => {
-        const row = document.createElement('div');
-        row.innerHTML = rowHtml.replace('className', item.className);// 设置班级名
-        row.style.display = 'flex';
+        const row = classRowTemplate.content.cloneNode(true);
 
         // 选择班级事件
         const classNameA = row.querySelectorAll('a')[0];
+        classNameA.textContent = item.className;
         classNameA.onclick = selectClass;
+
+        // 设置人数
+        const classNumber = row.querySelectorAll('span')[1];//第二个span
+        classNumber.textContent = item.members.length+"人";
 
         // 重命名事件
         const renameA = row.querySelectorAll('a')[1];

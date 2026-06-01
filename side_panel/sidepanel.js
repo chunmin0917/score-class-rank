@@ -18,7 +18,7 @@ let resultSummary = {totalName:0, validName:0, invalidName:0,invalidNames:[]};
 let subjectSummary = [];
 let scoreResult =[];
 let currentTabID;
-let index=0;
+let index=0;//index用于记录正在抓取的姓名在studentNames中的位置
 let delay =2;//在发出消息后，等待2秒页面刷新，然后执行后续的操作
 let searchPageURL;
 let studentNamesTAValueIsChanged = false;

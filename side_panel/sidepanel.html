@@ -22,13 +22,17 @@
         <h1 style="font-size: 22px;"> 请输入班级所有学生的姓名：</h1>
         <div id="classListDiv" style="display: none;">
             <hr>
-            <div id="sampleRow" style="display: flex;display: none;"> <!-- 样例行 -->
-                <span style="width: 180px;"><a href="#" title="选择班级">className</a> </span> <!-- 班级名最多10个汉字 -->
-                &nbsp;&nbsp;
-                <a href="#" >重命名</a>
-                &nbsp;&nbsp;
-                <a href="#" >删除</a>
-            </div>
+            <template id="classListTemplate">
+                <div style="display: flex;"> <!-- 样例行 -->
+                    <span style="width: 150px;"><a href="#" title="选择班级">班级名字</a> </span> <!-- 班级名最多10个汉字 -->
+                    &nbsp;&nbsp;
+                    <span style="width: 40px;">人数</span>
+                    &nbsp;&nbsp;
+                    <a href="#" >重命名</a>
+                    &nbsp;&nbsp;
+                    <a href="#" >删除</a>
+                </div>
+            </template>
             <div id="classListDivContent">
             </div>
             <hr>
