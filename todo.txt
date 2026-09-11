@@ -6,7 +6,7 @@
 7.添加“停止”按钮
 8. use chrome extension storage instead of localstorage
 9 add scratch history functionality
-
+10.change selectClass etc to arrow function to pass className directly
 
 function isInspectableUrl(url) {
   if (!url) return false;

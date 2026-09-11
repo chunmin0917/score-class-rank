@@ -1,0 +1,1 @@
+const __KEYWORDS_FOR_SUBJECT__ = "keywordsForSubjects";

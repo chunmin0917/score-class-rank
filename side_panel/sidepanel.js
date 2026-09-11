@@ -22,7 +22,7 @@ let index=0;//index用于记录正在抓取的姓名在studentNames中的位置
 let delay =2;//在发出消息后，等待2秒页面刷新，然后执行后续的操作
 let searchPageURL;
 let studentNamesTAValueIsChanged = false;
-let keywordsforsubjectArray = [];//科目关键词数组
+// let keywordsforsubjectArray = [];//科目关键词数组
 let allsubjectArray;//用户自定义科目关键词数组+科目关键词数组
 
 studentNamesTA.onchange = studentNamesTAValueChangedFunc;
@@ -411,7 +411,7 @@ function setAllSubjectArray() {
     if (userDefinedSubjectInput.value.trim() != "") {
         theArray = userDefinedSubjectInput.value.split(" ").filter((subject) => subject.trim() !== "");
     }
-    theArray = theArray.concat(keywordsforsubjectArray);
+    theArray = theArray.concat(subjectInLocalStorage.subjects);
     // 使用 Set 去重，并将结果转换回数组
     allsubjectArray = [...new Set(theArray)];
     console.log("allsubjectArray:", allsubjectArray);
