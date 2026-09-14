@@ -4,6 +4,7 @@ const __WAITING_TIME_FOR_REFRESH__ = "waitingTimeForRefresh";
 const CLASSNAME_NA = "";//"N/A"; // not available
 //{"classNames":[{"className":"陈多多的班级","members":["陈多多","陈欢欢","陈豆豆"]}]}
 let  classNamesInLocalStorage = {classNames:[]} ;
+let delay =2;//在发出消息后，等待2秒页面刷新，然后执行后续的操作
 
 const advanceHref = document.getElementById("advanceHref");
 const advanceDiv = document.getElementById("advanceDiv");
